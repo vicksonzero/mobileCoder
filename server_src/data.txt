@@ -1,0 +1,14 @@
+#include <stdio.h>
+
+int main(){
+
+adasdba;
+retrun 0; 
+}
+
+
+assadj
+asd
+asd
+asd
+asd

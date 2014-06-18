@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Linear Dragger!</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<!-- libraries -->
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	
+	<script src="watcher-1_1_0.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		// initialize global logger
+		var logger = make_watcher("liveDebug","debug");
+
+		// disable logger by default?
+		// logger.disable();
+	</script>
+
+
+	<!-- main functions -->
+	<style type="text/css" media="screen">
+		.container{
+			position:absolute;
+			top:0;
+			bottom:0;
+			left:0;
+			right:0;
+
+		}
+	</style>
+	<script type="text/javascript">
+		$(function(){
+			//var SERVER_ADDRESS = "http://localhost:3000";
+			var SERVER_ADDRESS = "http://dickson.hacked.jp:3000/";
+
+			var updating = false;
+			var value_before = $("#mainCode").value;
+			
+			download();
+
+			setInterval(function(){
+				var val = $("#mainCode").val();
+				if(val != value_before){
+					upload(val);
+					updating = true;
+					value_before = val;
+				}else{
+					$("#msg").html("");
+				}
+			},1000);
+
+			function upload(str){
+				$("#msg").html("saving");
+				$.ajax({
+					type: "POST",
+					url: SERVER_ADDRESS,
+					data: {data:str},
+					success: function uploadSuccess(msg){
+						$("#msg").html(msg);
+						updating = false;
+					}
+				});
+			}
+			function download(str){
+				$.ajax({
+					type: "GET",
+					url: SERVER_ADDRESS,
+					success: function downloadSuccess(msg){
+						console.log(msg);
+						$("#mainCode").html(msg);
+						updating = false;
+					}
+				});
+			}
+		});
+	</script>
+
+
+</head>
+<body style="margin:0;">
+	<div class="container">
+		<p><span id="msg"></span></p>
+		<textarea id="mainCode" rows="30" cols="25"></textarea>
+	</div>
+	<div id="liveDebug"></div>
+	<div id="credit" style="display:block; position:absolute; left:0; bottom:0;">
+		By <a href="http://dickson.hacked.jp">Dickson Chui</a> 
+	</div>
+</body>
+</html>
