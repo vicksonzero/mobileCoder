@@ -42,6 +42,7 @@
 			setInterval(function(){
 				var val = $("#mainCode").val();
 				if(val != value_before){
+					$("#msg").html("saving...");
 					upload(val);
 					updating = true;
 					value_before = val;
@@ -51,7 +52,6 @@
 			},1000);
 
 			function upload(str){
-				$("#msg").html("saving");
 				$.ajax({
 					type: "POST",
 					url: SERVER_ADDRESS,
